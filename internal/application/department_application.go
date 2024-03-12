@@ -34,7 +34,10 @@ func (a *DepartmentApplication) Create(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{
+		Meta: model.Meta{Code: 200, Status: "success create department"},
+		Data: response,
+	})
 }
 
 func (a *DepartmentApplication) List(ctx *fiber.Ctx) error {
@@ -58,6 +61,7 @@ func (a *DepartmentApplication) List(ctx *fiber.Ctx) error {
 	}
 
 	return ctx.JSON(model.WebResponse[[]model.DepartmentResponse]{
+		Meta:   model.Meta{Code: 200, Status: "OK"},
 		Data:   responses,
 		Paging: paging,
 	})
@@ -74,7 +78,10 @@ func (a *DepartmentApplication) Get(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{
+		Meta: model.Meta{Code: 200, Status: "OK"},
+		Data: response,
+	})
 }
 
 func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
@@ -92,7 +99,10 @@ func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{Data: response})
+	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{
+		Meta: model.Meta{Code: 200, Status: "success update department"},
+		Data: response,
+	})
 }
 
 func (a *DepartmentApplication) SoftDelete(ctx *fiber.Ctx) error {
@@ -105,5 +115,8 @@ func (a *DepartmentApplication) SoftDelete(ctx *fiber.Ctx) error {
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[bool]{Data: true})
+	return ctx.JSON(model.WebResponse[bool]{
+		Meta: model.Meta{Code: 200, Status: "success delete department"},
+		Data: true,
+	})
 }
