@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"strconv"
 	"test-be-kalbe/internal/domain/converter"
 	"test-be-kalbe/internal/domain/entity"
 	"test-be-kalbe/internal/domain/model"
@@ -15,10 +16,11 @@ import (
 )
 
 type positionService struct {
-	DB                 *gorm.DB
-	Log                *logrus.Logger
-	Validate           *validator.Validate
-	PositionRepository repository.PositionRepository
+	DB                   *gorm.DB
+	Log                  *logrus.Logger
+	Validate             *validator.Validate
+	PositionRepository   repository.PositionRepository
+	DepartmentRepository repository.DepartmentRepository
 }
 
 type PositionService interface {
@@ -29,12 +31,13 @@ type PositionService interface {
 	Search(ctx context.Context, request *model.PositionSearchRequest) ([]model.PositionResponse, int64, error)
 }
 
-func NewPositionService(db *gorm.DB, log *logrus.Logger, validate *validator.Validate, positionRepository repository.PositionRepository) *positionService {
+func NewPositionService(db *gorm.DB, log *logrus.Logger, validate *validator.Validate, positionRepository repository.PositionRepository, departmentRepository repository.DepartmentRepository) *positionService {
 	return &positionService{
-		DB:                 db,
-		Log:                log,
-		Validate:           validate,
-		PositionRepository: positionRepository,
+		DB:                   db,
+		Log:                  log,
+		Validate:             validate,
+		PositionRepository:   positionRepository,
+		DepartmentRepository: departmentRepository,
 	}
 }
 
@@ -47,9 +50,22 @@ func (s *positionService) Create(ctx context.Context, request *model.PositionCre
 		return nil, fiber.ErrBadRequest
 	}
 
+	// check department id
+	department := new(entity.Department)
+	if err := s.DepartmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
+		s.Log.WithError(err).Error("error finding department")
+		return nil, fiber.ErrNotFound
+	}
+
 	currentTime := time.Now()
+	departmentId, err := strconv.Atoi(request.DepartmentId)
+	if err != nil {
+		s.Log.WithError(err).Error("error parsing department ID")
+		return nil, fiber.ErrInternalServerError
+	}
+
 	position := &entity.Position{
-		DepartmentId: request.DepartmentId,
+		DepartmentId: int64(departmentId),
 		PositionName: request.PositionName,
 		CreatedBy:    "system",
 		CreatedAt:    &currentTime,
@@ -83,7 +99,21 @@ func (s *positionService) Update(ctx context.Context, request *model.PositionUpd
 		return nil, fiber.ErrNotFound
 	}
 
+	// check department id
+	department := new(entity.Department)
+	if err := s.DepartmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
+		s.Log.WithError(err).Error("error finding department")
+		return nil, fiber.ErrNotFound
+	}
+
 	currentTime := time.Now()
+	departmentId, err := strconv.Atoi(request.DepartmentId)
+	if err != nil {
+		s.Log.WithError(err).Error("error parsing department ID")
+		return nil, fiber.ErrInternalServerError
+	}
+
+	position.DepartmentId = int64(departmentId)
 	position.PositionName = request.PositionName
 	position.UpdatedBy = "system"
 	position.UpdatedAt = &currentTime
