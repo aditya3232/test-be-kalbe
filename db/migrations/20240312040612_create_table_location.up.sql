@@ -1,0 +1,11 @@
+CREATE TABLE location
+(
+    location_id INT NOT NULL AUTO_INCREMENT,
+    location_name VARCHAR(200) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(200) NULL DEFAULT NULL,
+    updated_at DATETIME NULL DEFAULT NULL,
+    updated_by VARCHAR(200) NULL DEFAULT NULL,
+    deleted_at DATETIME NULL DEFAULT NULL,
+    PRIMARY KEY (location_id)
+) ENGINE = InnoDB;
