@@ -36,8 +36,8 @@ func recoverPanic(ctx *fiber.Ctx) error {
 func (r *RouteConfig) SetupGuestRoute() {
 	r.App.Get("/api/departments", r.DepartmentApplication.List)
 	r.App.Post("/api/department", r.DepartmentApplication.Create)
-	r.App.Put("/api/department/:customerId", r.DepartmentApplication.Update)
-	r.App.Get("/api/department/:customerId", r.DepartmentApplication.Get)
-	r.App.Delete("/api/department/:customerId", r.DepartmentApplication.Delete)
+	r.App.Put("/api/department/:departmentId", r.DepartmentApplication.Update)
+	r.App.Get("/api/department/:departmentId", r.DepartmentApplication.Get)
+	r.App.Delete("/api/department/:departmentId", r.DepartmentApplication.SoftDelete)
 
 }

@@ -44,12 +44,12 @@ func (r *departmentRepository) Delete(db *gorm.DB, entity *entity.Department) er
 
 func (r *departmentRepository) CountById(db *gorm.DB, id any) (int64, error) {
 	var total int64
-	err := db.Model(&entity.Department{}).Where("id = ?", id).Count(&total).Error
+	err := db.Model(&entity.Department{}).Where("department_id = ?", id).Count(&total).Error
 	return total, err
 }
 
 func (r *departmentRepository) FindById(db *gorm.DB, entity *entity.Department, id any) error {
-	return db.Where("id = ?", id).Take(entity).Error
+	return db.Where("department_id = ? AND deleted_at IS NULL", id).Take(entity).Error
 }
 
 func (r *departmentRepository) Search(db *gorm.DB, request *model.DepartmentSearchRequest) ([]entity.Department, int64, error) {
@@ -71,8 +71,10 @@ func (r *departmentRepository) Filter(request *model.DepartmentSearchRequest) fu
 
 		if department_name := request.DepartmentName; department_name != "" {
 			department_name = "%" + department_name + "%"
-			tx = tx.Where("name LIKE ?", department_name)
+			tx = tx.Where("department_name LIKE ?", department_name)
 		}
+
+		tx = tx.Where("deleted_at IS NULL")
 
 		return tx
 	}

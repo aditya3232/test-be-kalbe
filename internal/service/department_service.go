@@ -6,6 +6,7 @@ import (
 	"test-be-kalbe/internal/domain/entity"
 	"test-be-kalbe/internal/domain/model"
 	"test-be-kalbe/internal/repository"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -23,7 +24,7 @@ type departmentService struct {
 type DepartmentService interface {
 	Create(ctx context.Context, request *model.DepartmentCreateRequest) (*model.DepartmentResponse, error)
 	Update(ctx context.Context, request *model.DepartmentUpdateRequest) (*model.DepartmentResponse, error)
-	Delete(ctx context.Context, request *model.DepartmentDeleteRequest) error
+	SoftDelete(ctx context.Context, request *model.DepartmentDeleteRequest) error
 	FindById(ctx context.Context, request *model.DepartmentGetByIdRequest) (*model.DepartmentResponse, error)
 	Search(ctx context.Context, request *model.DepartmentSearchRequest) ([]model.DepartmentResponse, int64, error)
 }
@@ -48,6 +49,7 @@ func (s *departmentService) Create(ctx context.Context, request *model.Departmen
 
 	department := &entity.Department{
 		DepartmentName: request.DepartmentName,
+		CreatedAt:      time.Now(),
 		CreatedBy:      "system",
 	}
 
@@ -95,7 +97,7 @@ func (s *departmentService) Update(ctx context.Context, request *model.Departmen
 	return converter.DepartmentToResponse(department), nil
 }
 
-func (s *departmentService) Delete(ctx context.Context, request *model.DepartmentDeleteRequest) error {
+func (s *departmentService) SoftDelete(ctx context.Context, request *model.DepartmentDeleteRequest) error {
 	tx := s.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
@@ -110,7 +112,9 @@ func (s *departmentService) Delete(ctx context.Context, request *model.Departmen
 		return fiber.ErrNotFound
 	}
 
-	if err := s.DepartmentRepository.Delete(tx, department); err != nil {
+	department.DeletedAt = time.Now()
+
+	if err := s.DepartmentRepository.Update(tx, department); err != nil {
 		s.Log.WithError(err).Error("error deleting department")
 		return fiber.ErrInternalServerError
 	}

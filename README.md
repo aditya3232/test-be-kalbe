@@ -15,7 +15,7 @@ Domain-Driven Design Golang
 2. Repository -> data akses layer
 3. Service -> adalah bisnis logic, seperti transaction db, add request to data model tabel, panggil repository, atau penegcekan data
 4. Event -> untuk menangani request eksternal sistem, seperti (HTTP, gRPC, Messaging, etc)
-5. Application -> mengkoordinasi interaksi antara lapisan presentasi (API) ke service, menerima input, dan mengoordinasikan operasi (service) yang diperlukan
+5. Application -> mengkoordinasi interaksi antara lapisan presentasi (API) ke service, menerima input, dan mengoordinasikan operasi ke service yang diperlukan
 6. Infrastructure -> menagani aspek teknis seperti database, integrasi eksternal lainnya
 
 
@@ -26,7 +26,7 @@ Domain-Driven Design Golang
 
 ## Framework & Library
 
-- GoFiber (HTTP Framework) : https://github.com/gofiber/fiber
+- GoFiber (HTTP Framework) : https://docs.gofiber.io/
 - GORM (ORM) : https://github.com/go-gorm/gorm
 - Viper (Configuration) : https://github.com/spf13/viper
 - Golang Migrate (Database Migration) : https://github.com/golang-migrate/migrate

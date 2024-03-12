@@ -65,7 +65,7 @@ func (a *DepartmentApplication) List(ctx *fiber.Ctx) error {
 
 func (a *DepartmentApplication) Get(ctx *fiber.Ctx) error {
 	request := &model.DepartmentGetByIdRequest{
-		DepartmentId: ctx.Params("department_id"),
+		DepartmentId: ctx.Params("departmentId"),
 	}
 
 	response, err := a.DepartmentService.FindById(ctx.UserContext(), request)
@@ -84,7 +84,7 @@ func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
-	request.DepartmentId = ctx.Params("department_id")
+	request.DepartmentId = ctx.Params("departmentId")
 
 	response, err := a.DepartmentService.Update(ctx.UserContext(), request)
 	if err != nil {
@@ -95,12 +95,12 @@ func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
 	return ctx.JSON(model.WebResponse[*model.DepartmentResponse]{Data: response})
 }
 
-func (a *DepartmentApplication) Delete(ctx *fiber.Ctx) error {
+func (a *DepartmentApplication) SoftDelete(ctx *fiber.Ctx) error {
 	request := &model.DepartmentDeleteRequest{
-		DepartmentId: ctx.Params("department_id"),
+		DepartmentId: ctx.Params("departmentId"),
 	}
 
-	if err := a.DepartmentService.Delete(ctx.UserContext(), request); err != nil {
+	if err := a.DepartmentService.SoftDelete(ctx.UserContext(), request); err != nil {
 		a.Log.WithError(err).Error("error deleting customer")
 		return err
 	}

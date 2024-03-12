@@ -8,7 +8,7 @@ type Attendance struct {
 	LocationId   int64      `gorm:"column:location_id"`
 	AbsentIn     *time.Time `gorm:"column:absent_in"`
 	AbsentOut    *time.Time `gorm:"column:absent_out"`
-	CreatedAt    *time.Time `gorm:"column:created_at;default:now()"`
+	CreatedAt    time.Time  `gorm:"column:created_at;default:now()"`
 	CreatedBy    string     `gorm:"column:created_by"`
 	UpdatedAt    *time.Time `gorm:"column:updated_at"`
 	UpdatedBy    string     `gorm:"column:updated_by"`

@@ -10,7 +10,7 @@ type Employee struct {
 	DepartmentId int64      `gorm:"column:department_id"`
 	PositionId   int64      `gorm:"column:position_id"`
 	Superior     int64      `gorm:"column:superior"`
-	CreatedAt    *time.Time `gorm:"column:created_at;default:now()"`
+	CreatedAt    time.Time  `gorm:"column:created_at;default:now()"`
 	CreatedBy    string     `gorm:"column:created_by"`
 	UpdatedAt    *time.Time `gorm:"column:updated_at"`
 	UpdatedBy    string     `gorm:"column:updated_by"`
