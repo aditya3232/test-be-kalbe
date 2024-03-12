@@ -200,6 +200,11 @@ func (s *positionService) Search(ctx context.Context, request *model.PositionSea
 		return nil, 0, fiber.ErrInternalServerError
 	}
 
+	if err := tx.Commit().Error; err != nil {
+		s.Log.WithError(err).Error("error searching position")
+		return nil, 0, fiber.ErrInternalServerError
+	}
+
 	responses := make([]model.PositionResponse, len(positions))
 	for i, position := range positions {
 		responses[i] = *converter.PositionToResponse(&position)
