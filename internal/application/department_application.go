@@ -10,14 +10,14 @@ import (
 )
 
 type DepartmentApplication struct {
-	Service service.DepartmentService
-	Log     *logrus.Logger
+	DepartmentService service.DepartmentService
+	Log               *logrus.Logger
 }
 
-func NewDepartmentApplication(service *service.DepartmentService, log *logrus.Logger) *DepartmentApplication {
+func NewDepartmentApplication(departmentService service.DepartmentService, log *logrus.Logger) *DepartmentApplication {
 	return &DepartmentApplication{
-		Service: *service,
-		Log:     log,
+		DepartmentService: departmentService,
+		Log:               log,
 	}
 }
 
@@ -28,7 +28,7 @@ func (a *DepartmentApplication) Create(ctx *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
-	response, err := a.Service.Create(ctx.UserContext(), request)
+	response, err := a.DepartmentService.Create(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error creating customer")
 		return err
@@ -38,14 +38,13 @@ func (a *DepartmentApplication) Create(ctx *fiber.Ctx) error {
 }
 
 func (a *DepartmentApplication) List(ctx *fiber.Ctx) error {
-
 	request := &model.DepartmentSearchRequest{
 		DepartmentName: ctx.Query("department_name", ""),
 		Page:           ctx.QueryInt("page", 1),
 		Size:           ctx.QueryInt("size", 10),
 	}
 
-	responses, total, err := a.Service.Search(ctx.UserContext(), request)
+	responses, total, err := a.DepartmentService.Search(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error searching department")
 		return err
@@ -69,7 +68,7 @@ func (a *DepartmentApplication) Get(ctx *fiber.Ctx) error {
 		DepartmentId: ctx.Params("department_id"),
 	}
 
-	response, err := a.Service.FindById(ctx.UserContext(), request)
+	response, err := a.DepartmentService.FindById(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error getting department")
 		return err
@@ -87,7 +86,7 @@ func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
 
 	request.DepartmentId = ctx.Params("department_id")
 
-	response, err := a.Service.Update(ctx.UserContext(), request)
+	response, err := a.DepartmentService.Update(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error updating department")
 		return err
@@ -101,7 +100,7 @@ func (a *DepartmentApplication) Delete(ctx *fiber.Ctx) error {
 		DepartmentId: ctx.Params("department_id"),
 	}
 
-	if err := a.Service.Delete(ctx.UserContext(), request); err != nil {
+	if err := a.DepartmentService.Delete(ctx.UserContext(), request); err != nil {
 		a.Log.WithError(err).Error("error deleting customer")
 		return err
 	}

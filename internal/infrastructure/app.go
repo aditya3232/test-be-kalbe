@@ -1,6 +1,11 @@
 package infrastructure
 
 import (
+	"test-be-kalbe/internal/application"
+	"test-be-kalbe/internal/repository"
+	"test-be-kalbe/internal/route"
+	"test-be-kalbe/internal/service"
+
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
@@ -14,4 +19,22 @@ type BootstrapConfig struct {
 	Log      *logrus.Logger
 	Validate *validator.Validate
 	Config   *viper.Viper
+}
+
+func Bootstrap(config *BootstrapConfig) {
+	// setup repository
+	departmentRepository := repository.NewDepartmentRepository(config.DB, config.Log)
+
+	// setup service
+	departmentService := service.NewDepartmentService(config.DB, config.Log, config.Validate, departmentRepository)
+
+	// setup application
+	departmentApplication := application.NewDepartmentApplication(departmentService, config.Log)
+
+	// setup route
+	routeConfig := route.RouteConfig{
+		App:                   config.App,
+		DepartmentApplication: departmentApplication,
+	}
+	routeConfig.Setup()
 }

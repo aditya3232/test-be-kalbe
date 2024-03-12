@@ -17,7 +17,7 @@ type departmentService struct {
 	DB                   *gorm.DB
 	Log                  *logrus.Logger
 	Validate             *validator.Validate
-	departmentRepository repository.DepartmentRepository
+	DepartmentRepository repository.DepartmentRepository
 }
 
 type DepartmentService interface {
@@ -28,12 +28,12 @@ type DepartmentService interface {
 	Search(ctx context.Context, request *model.DepartmentSearchRequest) ([]model.DepartmentResponse, int64, error)
 }
 
-func NewDepartmentService(db *gorm.DB, log *logrus.Logger, validate *validator.Validate, departmentRepository *repository.DepartmentRepository) DepartmentService {
+func NewDepartmentService(db *gorm.DB, log *logrus.Logger, validate *validator.Validate, departmentRepository repository.DepartmentRepository) *departmentService {
 	return &departmentService{
 		DB:                   db,
 		Log:                  log,
 		Validate:             validate,
-		departmentRepository: *departmentRepository,
+		DepartmentRepository: departmentRepository,
 	}
 }
 
@@ -51,7 +51,7 @@ func (s *departmentService) Create(ctx context.Context, request *model.Departmen
 		CreatedBy:      "system",
 	}
 
-	if err := s.departmentRepository.Create(tx, department); err != nil {
+	if err := s.DepartmentRepository.Create(tx, department); err != nil {
 		s.Log.WithError(err).Error("error creating department")
 		return nil, fiber.ErrInternalServerError
 	}
@@ -75,14 +75,14 @@ func (s *departmentService) Update(ctx context.Context, request *model.Departmen
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
+	if err := s.DepartmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error updating department")
 		return nil, fiber.ErrNotFound
 	}
 
 	department.DepartmentName = request.DepartmentName
 
-	if err := s.departmentRepository.Update(tx, department); err != nil {
+	if err := s.DepartmentRepository.Update(tx, department); err != nil {
 		s.Log.WithError(err).Error("error updating department")
 		return nil, fiber.ErrInternalServerError
 	}
@@ -105,12 +105,12 @@ func (s *departmentService) Delete(ctx context.Context, request *model.Departmen
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
+	if err := s.DepartmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error deleting department")
 		return fiber.ErrNotFound
 	}
 
-	if err := s.departmentRepository.Delete(tx, department); err != nil {
+	if err := s.DepartmentRepository.Delete(tx, department); err != nil {
 		s.Log.WithError(err).Error("error deleting department")
 		return fiber.ErrInternalServerError
 	}
@@ -134,7 +134,7 @@ func (s *departmentService) FindById(ctx context.Context, request *model.Departm
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
+	if err := s.DepartmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error getting department")
 		return nil, fiber.ErrNotFound
 	}
@@ -156,7 +156,7 @@ func (s *departmentService) Search(ctx context.Context, request *model.Departmen
 		return nil, 0, fiber.ErrBadRequest
 	}
 
-	departments, total, err := s.departmentRepository.Search(tx, request)
+	departments, total, err := s.DepartmentRepository.Search(tx, request)
 	if err != nil {
 		s.Log.WithError(err).Error("error searching department")
 		return nil, 0, fiber.ErrInternalServerError

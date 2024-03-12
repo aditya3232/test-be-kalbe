@@ -9,7 +9,7 @@ import (
 )
 
 type departmentRepository struct {
-	db  *gorm.DB
+	DB  *gorm.DB
 	Log *logrus.Logger
 }
 
@@ -23,9 +23,9 @@ type DepartmentRepository interface {
 	Filter(request *model.DepartmentSearchRequest) func(tx *gorm.DB) *gorm.DB
 }
 
-func NewDepartmentRepository(db *gorm.DB, log *logrus.Logger) DepartmentRepository {
+func NewDepartmentRepository(db *gorm.DB, log *logrus.Logger) *departmentRepository {
 	return &departmentRepository{
-		db:  db,
+		DB:  db,
 		Log: log,
 	}
 }
