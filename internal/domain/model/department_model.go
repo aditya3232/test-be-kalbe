@@ -19,7 +19,11 @@ type DepartmentUpdateRequest struct {
 }
 
 type DepartmentGetByIdRequest struct {
-	DepartmentName string `json:"department_name"`
+	DepartmentId int64 `json:"-" validate:"required"`
+}
+
+type DepartmentDeleteRequest struct {
+	DepartmentId int64 `json:"-" validate:"required"`
 }
 
 type DepartmentSearchRequest struct {
