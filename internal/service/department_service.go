@@ -47,10 +47,11 @@ func (s *departmentService) Create(ctx context.Context, request *model.Departmen
 		return nil, fiber.ErrBadRequest
 	}
 
+	currentTime := time.Now()
 	department := &entity.Department{
 		DepartmentName: request.DepartmentName,
-		CreatedAt:      time.Now(),
 		CreatedBy:      "system",
+		CreatedAt:      &currentTime,
 	}
 
 	if err := s.DepartmentRepository.Create(tx, department); err != nil {
@@ -82,7 +83,10 @@ func (s *departmentService) Update(ctx context.Context, request *model.Departmen
 		return nil, fiber.ErrNotFound
 	}
 
+	currentTime := time.Now()
 	department.DepartmentName = request.DepartmentName
+	department.UpdatedBy = "system"
+	department.UpdatedAt = &currentTime
 
 	if err := s.DepartmentRepository.Update(tx, department); err != nil {
 		s.Log.WithError(err).Error("error updating department")
@@ -112,7 +116,8 @@ func (s *departmentService) SoftDelete(ctx context.Context, request *model.Depar
 		return fiber.ErrNotFound
 	}
 
-	department.DeletedAt = time.Now()
+	currentTime := time.Now()
+	department.DeletedAt = &currentTime
 
 	if err := s.DepartmentRepository.Update(tx, department); err != nil {
 		s.Log.WithError(err).Error("error deleting department")
