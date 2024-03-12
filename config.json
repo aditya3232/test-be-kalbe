@@ -9,6 +9,10 @@
   "log": {
     "level": 6
   },
+  "jwt": {
+    "secret": "secret",
+    "expiresIn": 2
+  },
   "database": {
     "username": "root",
     "password": "root",

@@ -16,7 +16,7 @@ Domain-Driven Design Golang
 3. Service -> adalah bisnis logic, seperti transaction db, add request to data model tabel, panggil repository, atau penegcekan data
 4. Event -> untuk menangani request eksternal sistem, seperti (HTTP, gRPC, Messaging, etc)
 5. Application -> mengkoordinasi interaksi antara lapisan presentasi (API) ke service, menerima input, dan mengoordinasikan operasi ke service yang diperlukan
-6. Infrastructure -> menagani aspek teknis seperti database, integrasi eksternal lainnya
+6. Infrastructure -> menagani aspek teknis seperti koneksi database, minio, redis, elastic, dan integrasi eksternal lainnya
 
 
 ## Tech Stack
