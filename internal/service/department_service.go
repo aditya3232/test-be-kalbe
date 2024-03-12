@@ -24,7 +24,7 @@ type DepartmentService interface {
 	Create(ctx context.Context, request *model.DepartmentCreateRequest) (*model.DepartmentResponse, error)
 	Update(ctx context.Context, request *model.DepartmentUpdateRequest) (*model.DepartmentResponse, error)
 	Delete(ctx context.Context, request *model.DepartmentDeleteRequest) error
-	GetById(ctx context.Context, request *model.DepartmentGetByIdRequest) (*model.DepartmentResponse, error)
+	FindById(ctx context.Context, request *model.DepartmentGetByIdRequest) (*model.DepartmentResponse, error)
 	Search(ctx context.Context, request *model.DepartmentSearchRequest) ([]model.DepartmentResponse, int64, error)
 }
 
@@ -75,7 +75,7 @@ func (s *departmentService) Update(ctx context.Context, request *model.Departmen
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, int(request.DepartmentId)); err != nil {
+	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error updating department")
 		return nil, fiber.ErrNotFound
 	}
@@ -105,7 +105,7 @@ func (s *departmentService) Delete(ctx context.Context, request *model.Departmen
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, int(request.DepartmentId)); err != nil {
+	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error deleting department")
 		return fiber.ErrNotFound
 	}
@@ -124,7 +124,7 @@ func (s *departmentService) Delete(ctx context.Context, request *model.Departmen
 
 }
 
-func (s *departmentService) GetById(ctx context.Context, request *model.DepartmentGetByIdRequest) (*model.DepartmentResponse, error) {
+func (s *departmentService) FindById(ctx context.Context, request *model.DepartmentGetByIdRequest) (*model.DepartmentResponse, error) {
 	tx := s.DB.WithContext(ctx).Begin()
 	defer tx.Rollback()
 
@@ -134,7 +134,7 @@ func (s *departmentService) GetById(ctx context.Context, request *model.Departme
 	}
 
 	department := new(entity.Department)
-	if err := s.departmentRepository.FindById(tx, department, int(request.DepartmentId)); err != nil {
+	if err := s.departmentRepository.FindById(tx, department, request.DepartmentId); err != nil {
 		s.Log.WithError(err).Error("error getting department")
 		return nil, fiber.ErrNotFound
 	}

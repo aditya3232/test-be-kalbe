@@ -17,8 +17,8 @@ type DepartmentRepository interface {
 	Create(db *gorm.DB, entity *entity.Department) error
 	Update(db *gorm.DB, entity *entity.Department) error
 	Delete(db *gorm.DB, entity *entity.Department) error
-	CountById(db *gorm.DB, id int) (int64, error)
-	FindById(db *gorm.DB, entity *entity.Department, id int) error
+	CountById(db *gorm.DB, id any) (int64, error)
+	FindById(db *gorm.DB, entity *entity.Department, id any) error
 	Search(db *gorm.DB, request *model.DepartmentSearchRequest) ([]entity.Department, int64, error)
 	Filter(request *model.DepartmentSearchRequest) func(tx *gorm.DB) *gorm.DB
 }
@@ -42,13 +42,13 @@ func (r *departmentRepository) Delete(db *gorm.DB, entity *entity.Department) er
 	return db.Delete(entity).Error
 }
 
-func (r *departmentRepository) CountById(db *gorm.DB, id int) (int64, error) {
+func (r *departmentRepository) CountById(db *gorm.DB, id any) (int64, error) {
 	var total int64
 	err := db.Model(&entity.Department{}).Where("id = ?", id).Count(&total).Error
 	return total, err
 }
 
-func (r *departmentRepository) FindById(db *gorm.DB, entity *entity.Department, id int) error {
+func (r *departmentRepository) FindById(db *gorm.DB, entity *entity.Department, id any) error {
 	return db.Where("id = ?", id).Take(entity).Error
 }
 

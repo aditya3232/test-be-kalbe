@@ -4,7 +4,7 @@ from - https://leravio.com/blog/domain-driven-design-dalam-golang/
 
 Domain-Driven Design Golang
 
-- bounded contexts: setiap aplikasi memiliki masing-masing (domain, repository, service, dan controller yang berbeda-beda). membantu mendefinisikan batasan dan interaksi setiap domain
+- bounded contexts: setiap aplikasi memiliki masing-masing (domain, repository, service, dan application yang berbeda-beda). membantu mendefinisikan batasan dan interaksi setiap domain
 - aggregates: kumpulan objek domain yang saling terkait, menjamin enkapsulasi ke keadaan internal mereka. (konsep struct, interface, method)
 - Entities: menggunakan konsep struct untuk identifikasi data model representasi tabel di database, atau data transfer objek
 - Ubiquitous Language: penggunaan bahasa yang konsisten di antara semua pemangku kepentingan dalam proyek (penamaan variable, fungsi, method, dll)
