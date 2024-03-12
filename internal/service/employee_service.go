@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -88,9 +89,13 @@ func (s *employeeService) Create(ctx context.Context, request *model.EmployeeCre
 		s.Log.WithError(err).Error("error hashing password")
 		return nil, fiber.ErrInternalServerError
 	}
+	year := time.Now().Format("06")
+	month := time.Now().Format("01")
+	uuid := uuid.New().String()
+	uniqueCode := year + month + "-" + uuid
 
 	employee := &entity.Employee{
-		EmployeeCode: request.EmployeeCode,
+		EmployeeCode: uniqueCode,
 		EmployeeName: request.EmployeeName,
 		Password:     string(hashedPassword),
 		DepartmentId: int64(departmentId),
@@ -165,7 +170,6 @@ func (s *employeeService) Update(ctx context.Context, request *model.EmployeeUpd
 		return nil, fiber.ErrInternalServerError
 	}
 
-	employee.EmployeeCode = request.EmployeeCode
 	employee.EmployeeName = request.EmployeeName
 	employee.Password = string(hashedPassword)
 	employee.DepartmentId = int64(departmentId)

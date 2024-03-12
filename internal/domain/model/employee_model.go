@@ -15,22 +15,20 @@ type EmployeeResponse struct {
 }
 
 type EmployeeCreateRequest struct {
-	EmployeeCode string `json:"employee_code" validate:"required"`
 	EmployeeName string `json:"employee_name" validate:"required"`
 	Password     string `json:"password" validate:"required"`
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionId   string `json:"position_id" validate:"required"`
-	Superior     string `json:"superior"`
+	Superior     string `json:"superior" validate:"required"`
 }
 
 type EmployeeUpdateRequest struct {
 	EmployeeId   string `json:"employee_id" validate:"required"`
-	EmployeeCode string `json:"employee_code" validate:"required"`
 	EmployeeName string `json:"employee_name" validate:"required"`
 	Password     string `json:"password" validate:"required"`
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionId   string `json:"position_id" validate:"required"`
-	Superior     string `json:"superior"`
+	Superior     string `json:"superior" validate:"required"`
 }
 
 type EmployeeGetByIdRequest struct {

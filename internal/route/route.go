@@ -12,6 +12,7 @@ type RouteConfig struct {
 	App                   *fiber.App
 	DepartmentApplication *application.DepartmentApplication
 	PositionApplication   *application.PositionApplication
+	EmployeeApplication   *application.EmployeeApplication
 }
 
 func (c *RouteConfig) Setup() {
@@ -46,5 +47,11 @@ func (r *RouteConfig) SetupGuestRoute() {
 	r.App.Put("/api/position/:positionId", r.PositionApplication.Update)
 	r.App.Get("/api/position/:positionId", r.PositionApplication.Get)
 	r.App.Delete("/api/position/:positionId", r.PositionApplication.SoftDelete)
+
+	r.App.Get("/api/employees", r.EmployeeApplication.List)
+	r.App.Post("/api/employee", r.EmployeeApplication.Create)
+	r.App.Put("/api/employee/:employeeId", r.EmployeeApplication.Update)
+	r.App.Get("/api/employee/:employeeId", r.EmployeeApplication.Get)
+	r.App.Delete("/api/employee/:employeeId", r.EmployeeApplication.SoftDelete)
 
 }
