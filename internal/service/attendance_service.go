@@ -67,34 +67,55 @@ func (s *attendanceService) Create(ctx context.Context, request *model.Attendanc
 	}
 
 	currentTime := time.Now()
+
 	employeeId, err := strconv.Atoi(request.EmployeeId)
 	if err != nil {
 		s.Log.WithError(err).Error("error parsing employee id")
 		return nil, fiber.ErrInternalServerError
 	}
+
 	locationId, err := strconv.Atoi(request.LocationId)
 	if err != nil {
 		s.Log.WithError(err).Error("error parsing location id")
 		return nil, fiber.ErrInternalServerError
 	}
-	absentIn, err := time.Parse("2006-01-02 15:04:05", request.AbsentIn)
-	if err != nil {
-		s.Log.WithError(err).Error("error parsing AbsentIn")
-		return nil, fiber.ErrInternalServerError
+
+	absentIn := time.Time{}
+	if request.AbsentIn != "" {
+		var err error
+		absentIn, err = time.Parse("2006-01-02 15:04:05", request.AbsentIn)
+		if err != nil {
+			s.Log.WithError(err).Error("error parsing AbsentIn")
+			return nil, fiber.ErrInternalServerError
+		}
 	}
-	absentOut, err := time.Parse("2006-01-02 15:04:05", request.AbsentOut)
-	if err != nil {
-		s.Log.WithError(err).Error("error parsing AbsentOut")
-		return nil, fiber.ErrInternalServerError
+
+	absentOut := time.Time{}
+	if request.AbsentOut != "" {
+		absentOut, err = time.Parse("2006-01-02 15:04:05", request.AbsentOut)
+		if err != nil {
+			s.Log.WithError(err).Error("error parsing AbsentOut")
+			return nil, fiber.ErrInternalServerError
+		}
 	}
 
 	attendance := &entity.Attendance{
 		EmployeeId: int64(employeeId),
 		LocationId: int64(locationId),
-		AbsentIn:   &absentIn,
-		AbsentOut:  &absentOut,
 		CreatedBy:  request.CreatedBy,
 		CreatedAt:  &currentTime,
+	}
+
+	if request.AbsentIn != "" {
+		attendance.AbsentIn = absentIn
+	} else {
+		attendance.AbsentIn = time.Time{}
+	}
+
+	if request.AbsentOut != "" {
+		attendance.AbsentOut = absentOut
+	} else {
+		attendance.AbsentOut = time.Time{}
 	}
 
 	if err := s.AttendanceRepository.Create(tx, attendance); err != nil {
@@ -163,8 +184,8 @@ func (s *attendanceService) Update(ctx context.Context, request *model.Attendanc
 
 	attendance.EmployeeId = int64(employeeId)
 	attendance.LocationId = int64(locationId)
-	attendance.AbsentIn = &absentIn
-	attendance.AbsentOut = &absentOut
+	attendance.AbsentIn = absentIn
+	attendance.AbsentOut = absentOut
 	attendance.UpdatedBy = request.UpdatedBy
 	attendance.UpdatedAt = &currentTime
 
