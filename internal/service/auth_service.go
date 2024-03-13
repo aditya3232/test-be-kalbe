@@ -24,7 +24,7 @@ type authService struct {
 
 type AuthService interface {
 	Login(ctx context.Context, request *model.LoginRequest) (*model.LoginResponse, error)
-	Logout(ctx context.Context, request *model.LogoutRequest) error
+	Logout(ctx context.Context, request *model.LogoutRequest) (*model.LogoutResponse, error)
 }
 
 func NewAuthService(db *gorm.DB, log *logrus.Logger, validate *validator.Validate, employeeRepository repository.EmployeeRepository) *authService {
@@ -74,34 +74,32 @@ func (s *authService) Login(ctx context.Context, request *model.LoginRequest) (*
 
 }
 
-func (s *authService) Logout(ctx context.Context, request *model.LogoutRequest) error {
-	tx := s.DB.WithContext(ctx).Begin()
-	defer tx.Rollback()
-
+func (s *authService) Logout(ctx context.Context, request *model.LogoutRequest) (*model.LogoutResponse, error) {
 	if err := s.Validate.Struct(request); err != nil {
 		s.Log.WithError(err).Error("error validating request body")
-		return fiber.ErrBadRequest
+		return nil, fiber.ErrBadRequest
 	}
 
 	// validate token
 	_, err := helper.ValidateToken(request.Token)
 	if err != nil {
 		s.Log.WithError(err).Error("error validating token")
-		return fiber.ErrUnauthorized
+		return nil, fiber.ErrUnauthorized
 	}
 
 	// validate employee id from claims
-	_, err = helper.GetEmployeeIDFromToken(request.Token)
+	employeeId, err := helper.GetEmployeeIDFromToken(request.Token)
 	if err != nil {
 		s.Log.WithError(err).Error("error getting employee id from token")
-		return fiber.ErrUnauthorized
+		return nil, fiber.ErrUnauthorized
 	}
 
-	// commit transaction
-	if err := tx.Commit().Error; err != nil {
-		s.Log.WithError(err).Error("error commit transaction")
-		return fiber.ErrInternalServerError
+	// invalidate token
+	expired, err := helper.InvalidateToken(request.Token)
+	if err != nil {
+		s.Log.WithError(err).Error("error invalidating token")
+		return nil, fiber.ErrInternalServerError
 	}
 
-	return nil
+	return converter.LogoutToResponse(employeeId, expired), nil
 }

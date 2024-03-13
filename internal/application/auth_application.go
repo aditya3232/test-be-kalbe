@@ -54,14 +54,14 @@ func (a *AuthApplication) Logout(ctx *fiber.Ctx) error {
 
 	request.Token = token
 
-	err := a.AuthService.Logout(ctx.UserContext(), request)
+	response, err := a.AuthService.Logout(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error logout")
 		return err
 	}
 
-	return ctx.JSON(model.WebResponse[bool]{
+	return ctx.JSON(model.WebResponse[*model.LogoutResponse]{
 		Meta: model.Meta{Code: 200, Status: "success logout"},
-		Data: true,
+		Data: response,
 	})
 }

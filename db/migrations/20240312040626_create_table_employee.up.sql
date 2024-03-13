@@ -12,6 +12,7 @@ CREATE TABLE employee
     updated_at DATETIME NULL DEFAULT NULL,
     updated_by VARCHAR(200) NULL DEFAULT NULL,
     deleted_at DATETIME NULL DEFAULT NULL,
+    token VARCHAR(255) NULL DEFAULT NULL,
     PRIMARY KEY (employee_id),
     FOREIGN KEY (department_id) REFERENCES department(department_id),
     FOREIGN KEY (position_id) REFERENCES `position`(position_id)

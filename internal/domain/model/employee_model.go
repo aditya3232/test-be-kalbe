@@ -29,6 +29,7 @@ type EmployeeUpdateRequest struct {
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionId   string `json:"position_id" validate:"required"`
 	Superior     string `json:"superior" validate:"required"`
+	Token        string `json:"token"`
 }
 
 type EmployeeGetByIdRequest struct {

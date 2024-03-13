@@ -68,3 +68,21 @@ func GetEmployeeIDFromToken(encodedToken string) (int, error) {
 		return 0, errors.New("invalid token claims")
 	}
 }
+
+func InvalidateToken(encodedToken string) (time.Time, error) {
+	// Parse the JWT token
+	token, err := ValidateToken(encodedToken)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	// Extract the expiration time from the token
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		expirationTime := time.Now()
+		claims["exp"] = expirationTime.Unix()
+
+		return expirationTime, nil
+	}
+
+	return time.Time{}, errors.New("invalid token claims")
+}
