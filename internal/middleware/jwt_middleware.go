@@ -66,6 +66,7 @@ func (a *JwtApplication) JWTMiddleware(ctx *fiber.Ctx) error {
 
 	// Set the employee ID in the context
 	ctx.Locals("employee_id", employeeId)
+	ctx.Locals("employee_name", employee.EmployeeName)
 
 	// Continue with the next handler
 	return ctx.Next()

@@ -50,7 +50,7 @@ func (s *departmentService) Create(ctx context.Context, request *model.Departmen
 	currentTime := time.Now()
 	department := &entity.Department{
 		DepartmentName: request.DepartmentName,
-		CreatedBy:      "system",
+		CreatedBy:      request.CreatedBy,
 		CreatedAt:      &currentTime,
 	}
 

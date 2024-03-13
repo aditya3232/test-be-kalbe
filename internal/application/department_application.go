@@ -28,6 +28,8 @@ func (a *DepartmentApplication) Create(ctx *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
+	request.CreatedBy = ctx.Locals("employee_name").(string)
+
 	response, err := a.DepartmentService.Create(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error creating department")

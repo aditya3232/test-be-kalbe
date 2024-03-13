@@ -11,6 +11,7 @@ type DepartmentResponse struct {
 
 type DepartmentCreateRequest struct {
 	DepartmentName string `json:"department_name" validate:"required"`
+	CreatedBy      string `json:"created_by"`
 }
 
 type DepartmentUpdateRequest struct {
