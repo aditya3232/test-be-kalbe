@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"strconv"
 	"test-be-kalbe/internal/domain/entity"
 	"test-be-kalbe/internal/domain/model"
 
@@ -69,10 +68,10 @@ func (r *attendanceRepository) Search(db *gorm.DB, request *model.AttendanceSear
 
 func (r *attendanceRepository) Filter(request *model.AttendanceSearchRequest) func(tx *gorm.DB) *gorm.DB {
 	return func(tx *gorm.DB) *gorm.DB {
-		if request.EmployeeId != strconv.Itoa(0) {
+		if request.EmployeeId != "" {
 			tx = tx.Where("employee_id = ?", request.EmployeeId)
 		}
-		if request.LocationId != strconv.Itoa(0) {
+		if request.LocationId != "" {
 			tx = tx.Where("location_id = ?", request.LocationId)
 		}
 
