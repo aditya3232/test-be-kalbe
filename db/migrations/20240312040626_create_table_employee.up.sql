@@ -6,7 +6,7 @@ CREATE TABLE employee
     password VARCHAR(255),
     department_id INT NULL DEFAULT NULL,
     position_id INT NULL DEFAULT NULL,
-    superior INT NOT NULL,
+    superior INT NULL DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(200) NULL DEFAULT NULL,
     updated_at DATETIME NULL DEFAULT NULL,

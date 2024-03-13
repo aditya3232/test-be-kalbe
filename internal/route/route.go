@@ -20,7 +20,7 @@ type RouteConfig struct {
 
 func (r *RouteConfig) Setup() {
 	r.App.Use(recoverPanic)
-	r.SetupGuestRoute()
+	r.SetupAuthenticationRoute()
 	r.SetupMiddlewareRoute()
 }
 
@@ -39,27 +39,12 @@ func recoverPanic(ctx *fiber.Ctx) error {
 	return ctx.Next()
 }
 
-func (r *RouteConfig) SetupGuestRoute() {
-	// r.App.Get("/api/departments", r.DepartmentApplication.List)
-	r.App.Post("/api/department", r.DepartmentApplication.Create)
-	r.App.Put("/api/department/:departmentId", r.DepartmentApplication.Update)
-	r.App.Get("/api/department/:departmentId", r.DepartmentApplication.Get)
-	r.App.Delete("/api/department/:departmentId", r.DepartmentApplication.SoftDelete)
+func (r *RouteConfig) SetupAuthenticationRoute() {
+	authenticationGroup := r.App.Group("/api")
 
-	r.App.Get("/api/positions", r.PositionApplication.List)
-	r.App.Post("/api/position", r.PositionApplication.Create)
-	r.App.Put("/api/position/:positionId", r.PositionApplication.Update)
-	r.App.Get("/api/position/:positionId", r.PositionApplication.Get)
-	r.App.Delete("/api/position/:positionId", r.PositionApplication.SoftDelete)
-
-	r.App.Get("/api/employees", r.EmployeeApplication.List)
-	r.App.Post("/api/employee", r.EmployeeApplication.Create)
-	r.App.Put("/api/employee/:employeeId", r.EmployeeApplication.Update)
-	r.App.Get("/api/employee/:employeeId", r.EmployeeApplication.Get)
-	r.App.Delete("/api/employee/:employeeId", r.EmployeeApplication.SoftDelete)
-
-	r.App.Post("/api/login", r.AuthApplication.Login)
-	r.App.Post("/api/logout", r.AuthApplication.Logout)
+	authenticationGroup.Post("/login", r.AuthApplication.Login)
+	authenticationGroup.Post("/logout", r.AuthApplication.Logout)
+	authenticationGroup.Post("/employee", r.EmployeeApplication.Create)
 
 }
 
@@ -69,4 +54,21 @@ func (r *RouteConfig) SetupMiddlewareRoute() {
 	middlewareGroup.Use(r.MiddlewareApplication.JWTMiddleware)
 
 	middlewareGroup.Get("/departments", r.DepartmentApplication.List)
+	middlewareGroup.Get("/departments", r.DepartmentApplication.List)
+	middlewareGroup.Post("/department", r.DepartmentApplication.Create)
+	middlewareGroup.Put("/department/:departmentId", r.DepartmentApplication.Update)
+	middlewareGroup.Get("/department/:departmentId", r.DepartmentApplication.Get)
+	middlewareGroup.Delete("/department/:departmentId", r.DepartmentApplication.SoftDelete)
+
+	middlewareGroup.Get("/positions", r.PositionApplication.List)
+	middlewareGroup.Post("/position", r.PositionApplication.Create)
+	middlewareGroup.Put("/position/:positionId", r.PositionApplication.Update)
+	middlewareGroup.Get("/position/:positionId", r.PositionApplication.Get)
+	middlewareGroup.Delete("/position/:positionId", r.PositionApplication.SoftDelete)
+
+	middlewareGroup.Get("/employees", r.EmployeeApplication.List)
+	// middlewareGroup.Post("/employee", r.EmployeeApplication.Create)
+	middlewareGroup.Put("/employee/:employeeId", r.EmployeeApplication.Update)
+	middlewareGroup.Get("/employee/:employeeId", r.EmployeeApplication.Get)
+	middlewareGroup.Delete("/employee/:employeeId", r.EmployeeApplication.SoftDelete)
 }
