@@ -10,14 +10,15 @@ import (
 )
 
 type RouteConfig struct {
-	App                   *fiber.App
-	DepartmentApplication *application.DepartmentApplication
-	PositionApplication   *application.PositionApplication
-	EmployeeApplication   *application.EmployeeApplication
-	AuthApplication       *application.AuthApplication
-	MiddlewareApplication *middleware.JwtApplication
-	LocationApplication   *application.LocationApplication
-	AttendanceApplication *application.AttendanceApplication
+	App                         *fiber.App
+	DepartmentApplication       *application.DepartmentApplication
+	PositionApplication         *application.PositionApplication
+	EmployeeApplication         *application.EmployeeApplication
+	AuthApplication             *application.AuthApplication
+	MiddlewareApplication       *middleware.JwtApplication
+	LocationApplication         *application.LocationApplication
+	AttendanceApplication       *application.AttendanceApplication
+	AttendanceReportApplication *application.AttendanceReportApplication
 }
 
 func (r *RouteConfig) Setup() {
@@ -84,5 +85,7 @@ func (r *RouteConfig) SetupMiddlewareRoute() {
 	middlewareGroup.Put("/attendance/:attendanceId", r.AttendanceApplication.Update)
 	middlewareGroup.Get("/attendance/:attendanceId", r.AttendanceApplication.Get)
 	middlewareGroup.Delete("/attendance/:attendanceId", r.AttendanceApplication.SoftDelete)
+
+	middlewareGroup.Get("/attendance-reports", r.AttendanceReportApplication.List)
 
 }

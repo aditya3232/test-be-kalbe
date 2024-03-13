@@ -29,6 +29,7 @@ func Bootstrap(config *BootstrapConfig) {
 	employeeRepository := repository.NewEmployeeRepository(config.DB, config.Log)
 	locationRepository := repository.NewLocationRepository(config.DB, config.Log)
 	attendanceRepository := repository.NewAttendanceRepository(config.DB, config.Log)
+	attendanceReportRepository := repository.NewAttendanceReportRepository(config.DB, config.Log)
 
 	// setup service
 	departmentService := service.NewDepartmentService(config.DB, config.Log, config.Validate, departmentRepository)
@@ -37,6 +38,7 @@ func Bootstrap(config *BootstrapConfig) {
 	authService := service.NewAuthService(config.DB, config.Log, config.Validate, employeeRepository)
 	locationService := service.NewLocationService(config.DB, config.Log, config.Validate, locationRepository)
 	attendanceService := service.NewAttendanceService(config.DB, config.Log, config.Validate, attendanceRepository, employeeRepository, locationRepository)
+	attendanceReportService := service.NewAttendanceReportService(config.DB, config.Log, config.Validate, attendanceReportRepository)
 
 	// setup application
 	departmentApplication := application.NewDepartmentApplication(departmentService, config.Log)
@@ -46,17 +48,19 @@ func Bootstrap(config *BootstrapConfig) {
 	jwtMiddleware := middleware.NewJwtApplication(employeeService, config.Log)
 	locationApplication := application.NewLocationApplication(locationService, config.Log)
 	attendanceApplication := application.NewAttendanceApplication(attendanceService, config.Log)
+	attendanceReportApplication := application.NewAttendanceReportApplication(attendanceReportService, config.Log)
 
 	// setup route
 	routeConfig := route.RouteConfig{
-		App:                   config.App,
-		DepartmentApplication: departmentApplication,
-		PositionApplication:   positionApplication,
-		EmployeeApplication:   employeeApplication,
-		AuthApplication:       authApplication,
-		MiddlewareApplication: jwtMiddleware,
-		LocationApplication:   locationApplication,
-		AttendanceApplication: attendanceApplication,
+		App:                         config.App,
+		DepartmentApplication:       departmentApplication,
+		PositionApplication:         positionApplication,
+		EmployeeApplication:         employeeApplication,
+		AuthApplication:             authApplication,
+		MiddlewareApplication:       jwtMiddleware,
+		LocationApplication:         locationApplication,
+		AttendanceApplication:       attendanceApplication,
+		AttendanceReportApplication: attendanceReportApplication,
 	}
 	routeConfig.Setup()
 }

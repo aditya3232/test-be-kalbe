@@ -12,7 +12,7 @@ type AttendanceReportResponse struct {
 }
 
 type AttendanceReportSearchRequest struct {
-	TimeInterval string `json:"time_interval"` // day, week, month
+	TimeInterval string `json:"time_interval" validate:"oneof=day week month year"` // this day, this week, this
 	Page         int    `json:"page" validate:"min=1"`
 	Size         int    `json:"size" validate:"min=1,max=100"`
 }

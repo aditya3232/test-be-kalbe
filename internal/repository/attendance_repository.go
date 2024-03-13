@@ -3,6 +3,7 @@ package repository
 import (
 	"test-be-kalbe/internal/domain/entity"
 	"test-be-kalbe/internal/domain/model"
+	"time"
 
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
@@ -73,6 +74,37 @@ func (r *attendanceRepository) Filter(request *model.AttendanceSearchRequest) fu
 		}
 		if request.LocationId != "" {
 			tx = tx.Where("location_id = ?", request.LocationId)
+		}
+		if request.TimeInterval != "" {
+			// Initialize variables for start and end time
+			var startTime, endTime time.Time
+
+			// Get current time
+			now := time.Now()
+
+			// Calculate start and end time based on TimeInterval
+			switch request.TimeInterval {
+			case "day":
+				startTime = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, now.Location())
+				endTime = startTime.AddDate(0, 0, 1).Add(-time.Second)
+			case "week":
+				weekday := int(now.Weekday())
+				startTime = now.AddDate(0, 0, -weekday)
+				startTime = time.Date(startTime.Year(), startTime.Month(), startTime.Day(), 0, 0, 0, 0, startTime.Location())
+				endTime = startTime.AddDate(0, 0, 7).Add(-time.Second)
+			case "month":
+				startTime = time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location())
+				endTime = startTime.AddDate(0, 1, 0).Add(-time.Second)
+			case "year":
+				startTime = time.Date(now.Year(), time.January, 1, 0, 0, 0, 0, now.Location())
+				endTime = startTime.AddDate(1, 0, 0).Add(-time.Second)
+			}
+
+			// Apply time interval condition to the query
+			tx = tx.Where("created_at >= ? AND created_at <= ?", startTime, endTime)
+		} else {
+			// If no TimeInterval specified, fetch all data
+			tx = tx.Where("created_at IS NOT NULL")
 		}
 
 		tx = tx.Where("deleted_at IS NULL")

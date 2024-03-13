@@ -38,8 +38,9 @@ type AttendanceDeleteRequest struct {
 }
 
 type AttendanceSearchRequest struct {
-	EmployeeId string `json:"employee_id"`
-	LocationId string `json:"location_id"`
-	Page       int    `json:"page" validate:"min=1"`
-	Size       int    `json:"size" validate:"min=1,max=100"`
+	EmployeeId   string `json:"employee_id"`
+	LocationId   string `json:"location_id"`
+	TimeInterval string `json:"time_interval" validate:"oneof=day week month year"` // this day, this week, this month, this year
+	Page         int    `json:"page" validate:"min=1"`
+	Size         int    `json:"size" validate:"min=1,max=100"`
 }

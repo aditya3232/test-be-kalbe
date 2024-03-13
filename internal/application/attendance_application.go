@@ -45,10 +45,11 @@ func (a *AttendanceApplication) Create(ctx *fiber.Ctx) error {
 
 func (a *AttendanceApplication) List(ctx *fiber.Ctx) error {
 	request := &model.AttendanceSearchRequest{
-		EmployeeId: ctx.Query("employee_id", ""),
-		LocationId: ctx.Query("location_id", ""),
-		Page:       ctx.QueryInt("page", 1),
-		Size:       ctx.QueryInt("size", 10),
+		EmployeeId:   ctx.Query("employee_id", ""),
+		LocationId:   ctx.Query("location_id", ""),
+		TimeInterval: ctx.Query("time_interval", ""),
+		Page:         ctx.QueryInt("page", 1),
+		Size:         ctx.QueryInt("size", 10),
 	}
 
 	responses, total, err := a.AttendanceService.Search(ctx.UserContext(), request)
