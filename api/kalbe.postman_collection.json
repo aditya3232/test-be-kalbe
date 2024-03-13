@@ -1,0 +1,886 @@
+{
+	"info": {
+		"_postman_id": "0f77290f-7fdf-40e7-896c-7878d94cfeb9",
+		"name": "kalbe",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15473973"
+	},
+	"item": [
+		{
+			"name": "department",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDQ5MTIzMH0.Oc7a03114f1EzZ6Qn7eKa5uQWux-x6XtLUhbhM0cTJE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/departments?page=1&size=4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"departments"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								},
+								{
+									"key": "department_name",
+									"value": "NVIDIA",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"department_name\": \"zzz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/department",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"department"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"department_name\": \"NVIDIA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/department/14",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"department",
+								"14"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employee/5",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employee",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soft-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/department/13",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"department",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attendance",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/attendances?page=1&size=4&time_interval=year",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendances"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								},
+								{
+									"key": "employee_id",
+									"value": "5",
+									"disabled": true
+								},
+								{
+									"key": "location_id",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "time_interval",
+									"value": "year",
+									"description": "validate:\"oneof=day week month year\" || this day, this week, this month, this year"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_id\": \"7\",\r\n    \"location_id\": \"4\",\r\n    \"absent_in\": \"2024-03-13 21:00:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_id\": \"7\",\r\n    \"location_id\": \"4\",\r\n    \"absent_in\": \"2024-03-13 21:00:00\",\r\n    \"absent_out\": \"2024-03-13 22:20:00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/attendance/19",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/attendance/19",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"19"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soft-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/attendance/19",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance",
+								"19"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "location",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/locations?page=1&size=4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"locations"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								},
+								{
+									"key": "location_name",
+									"value": "bogor",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_name\": \"bogor\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/location",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"location_name\": \"aceh\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/location/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/location/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soft-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/location/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "position",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/positions?page=&size=&position_name=position-FTH",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"positions"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": ""
+								},
+								{
+									"key": "size",
+									"value": ""
+								},
+								{
+									"key": "position_name",
+									"value": "position-FTH"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"department_id\": \"10\",\r\n    \"position_name\": \"position-MSI\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/position",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"position"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDQ5MjIwOH0.ik7ab02wEyGer1sppNALjUfH6ISOrIpak7uL2w5IyUY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"department_id\": \"9\",\r\n    \"position_name\": \"position-FTH-A\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/position/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"position",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/position/1",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"position",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soft-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/position/2",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"position",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "employee",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employees?page=&size=&employee_name=diqi",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employees"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": ""
+								},
+								{
+									"key": "size",
+									"value": ""
+								},
+								{
+									"key": "employee_name",
+									"value": "diqi"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDQ5MTUxOH0.oe0nKErK1A9VJfwh9CL4qmAIYZkRGsvTSpaYT1hzcqw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_name\": \"diqi\",\r\n    \"password\": \"diqi\",\r\n    \"department_id\": \"9\",\r\n    \"position_id\": \"2\",\r\n    \"superior\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/employee",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_name\": \"budi\",\r\n    \"password\": \"budi\",\r\n    \"department_id\": \"9\",\r\n    \"position_id\": \"2\",\r\n    \"superior\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/employee/6",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employee",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-by-id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employee/6",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employee",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "soft-delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/employee/4",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"employee",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"employee_name\": \"diqi\",\r\n    \"password\": \"diqi\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDQ4OTY1M30.dykGDJeBEMduT4TTyDTCqBvGdf-wWdCEr5ddxX126SA",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attendance-report",
+			"item": [
+				{
+					"name": "list",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbXBsb3llZSI6eyJlbXBsb3llZV9pZCI6N30sImV4cCI6MTcxMDUwOTMwN30._bqNYaGqooBQdizCTM4xcPMH00NoLHPtOoAa5o1zydY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/attendance-reports?page=1&size=10&time_interval=year",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"attendance-reports"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "time_interval",
+									"value": "year",
+									"description": "validate:\"oneof=day week month year\" || this day, this week, this month, this year"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
