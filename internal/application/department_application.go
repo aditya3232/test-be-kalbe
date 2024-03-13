@@ -94,6 +94,7 @@ func (a *DepartmentApplication) Update(ctx *fiber.Ctx) error {
 	}
 
 	request.DepartmentId = ctx.Params("departmentId")
+	request.UpdatedBy = ctx.Locals("employee_name").(string)
 
 	response, err := a.DepartmentService.Update(ctx.UserContext(), request)
 	if err != nil {

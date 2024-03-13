@@ -13,12 +13,14 @@ type PositionResponse struct {
 type PositionCreateRequest struct {
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionName string `json:"position_name" validate:"required"`
+	CreatedBy    string `json:"created_by"`
 }
 
 type PositionUpdateRequest struct {
 	PositionId   string `json:"position_id" validate:"required"`
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionName string `json:"position_name" validate:"required"`
+	UpdatedBy    string `json:"updated_by"`
 }
 
 type PositionGetByIdRequest struct {

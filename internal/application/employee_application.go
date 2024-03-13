@@ -29,6 +29,8 @@ func (a *EmployeeApplication) Create(ctx *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
+	request.CreatedBy = ctx.Locals("employee_name").(string)
+
 	response, err := a.EmployeeService.Create(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error creating employee")
@@ -93,6 +95,7 @@ func (a *EmployeeApplication) Update(ctx *fiber.Ctx) error {
 	}
 
 	request.EmployeeId = ctx.Params("employeeId")
+	request.UpdatedBy = ctx.Locals("employee_name").(string)
 
 	response, err := a.EmployeeService.Update(ctx.UserContext(), request)
 	if err != nil {

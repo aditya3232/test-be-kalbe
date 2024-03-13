@@ -67,7 +67,7 @@ func (s *positionService) Create(ctx context.Context, request *model.PositionCre
 	position := &entity.Position{
 		DepartmentId: int64(departmentId),
 		PositionName: request.PositionName,
-		CreatedBy:    "system",
+		CreatedBy:    request.CreatedBy,
 		CreatedAt:    &currentTime,
 	}
 
@@ -115,7 +115,7 @@ func (s *positionService) Update(ctx context.Context, request *model.PositionUpd
 
 	position.DepartmentId = int64(departmentId)
 	position.PositionName = request.PositionName
-	position.UpdatedBy = "system"
+	position.UpdatedBy = request.UpdatedBy
 	position.UpdatedAt = &currentTime
 
 	if err := s.PositionRepository.Update(tx, position); err != nil {

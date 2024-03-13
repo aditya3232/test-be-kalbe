@@ -17,6 +17,7 @@ type DepartmentCreateRequest struct {
 type DepartmentUpdateRequest struct {
 	DepartmentId   string `json:"department_id" validate:"required"`
 	DepartmentName string `json:"department_name" validate:"required"`
+	UpdatedBy      string `json:"updated_by"`
 }
 
 type DepartmentGetByIdRequest struct {

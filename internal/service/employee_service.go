@@ -101,7 +101,7 @@ func (s *employeeService) Create(ctx context.Context, request *model.EmployeeCre
 		DepartmentId: int64(departmentId),
 		PositionId:   int64(positionId),
 		Superior:     int64(superior),
-		CreatedBy:    "system",
+		CreatedBy:    request.CreatedBy,
 		CreatedAt:    &currentTime,
 	}
 
@@ -175,7 +175,7 @@ func (s *employeeService) Update(ctx context.Context, request *model.EmployeeUpd
 	employee.DepartmentId = int64(departmentId)
 	employee.PositionId = int64(positionId)
 	employee.Superior = int64(superior)
-	employee.UpdatedBy = "system"
+	employee.UpdatedBy = request.UpdatedBy
 	employee.UpdatedAt = &currentTime
 
 	if err := s.EmployeeRepository.Update(tx, employee); err != nil {

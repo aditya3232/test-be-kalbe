@@ -85,7 +85,7 @@ func (s *departmentService) Update(ctx context.Context, request *model.Departmen
 
 	currentTime := time.Now()
 	department.DepartmentName = request.DepartmentName
-	department.UpdatedBy = "system"
+	department.UpdatedBy = request.UpdatedBy
 	department.UpdatedAt = &currentTime
 
 	if err := s.DepartmentRepository.Update(tx, department); err != nil {

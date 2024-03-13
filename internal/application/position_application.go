@@ -28,6 +28,8 @@ func (a *PositionApplication) Create(ctx *fiber.Ctx) error {
 		return fiber.ErrBadRequest
 	}
 
+	request.CreatedBy = ctx.Locals("employee_name").(string)
+
 	response, err := a.PositionService.Create(ctx.UserContext(), request)
 	if err != nil {
 		a.Log.WithError(err).Error("error creating position")
@@ -92,6 +94,7 @@ func (a *PositionApplication) Update(ctx *fiber.Ctx) error {
 	}
 
 	request.PositionId = ctx.Params("positionId")
+	request.UpdatedBy = ctx.Locals("employee_name").(string)
 
 	response, err := a.PositionService.Update(ctx.UserContext(), request)
 	if err != nil {

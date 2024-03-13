@@ -21,6 +21,7 @@ type EmployeeCreateRequest struct {
 	DepartmentId string `json:"department_id" validate:"required"`
 	PositionId   string `json:"position_id" validate:"required"`
 	Superior     string `json:"superior" validate:"required"`
+	CreatedBy    string `json:"created_by"`
 }
 
 type EmployeeUpdateRequest struct {
@@ -31,6 +32,7 @@ type EmployeeUpdateRequest struct {
 	PositionId   string `json:"position_id" validate:"required"`
 	Superior     string `json:"superior" validate:"required"`
 	Token        string `json:"token"`
+	UpdatedBy    string `json:"updated_by"`
 }
 
 type EmployeeGetByIdRequest struct {
