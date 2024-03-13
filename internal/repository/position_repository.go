@@ -44,7 +44,7 @@ func (r *positionRepository) Delete(db *gorm.DB, entity *entity.Position) error 
 
 func (r *positionRepository) CountById(db *gorm.DB, id any) (int64, error) {
 	var total int64
-	err := db.Model(&entity.Position{}).Where("position_id = ?", id).Count(&total).Error
+	err := db.Model(&entity.Position{}).Where("position_id = ? AND deleted_at IS NULL", id).Count(&total).Error
 	return total, err
 }
 

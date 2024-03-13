@@ -44,7 +44,7 @@ func (r *departmentRepository) Delete(db *gorm.DB, entity *entity.Department) er
 
 func (r *departmentRepository) CountById(db *gorm.DB, id any) (int64, error) {
 	var total int64
-	err := db.Model(&entity.Department{}).Where("department_id = ?", id).Count(&total).Error
+	err := db.Model(&entity.Department{}).Where("department_id = ? AND deleted_at IS NULL", id).Count(&total).Error
 	return total, err
 }
 
