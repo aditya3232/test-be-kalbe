@@ -108,7 +108,7 @@ func (a *LocationApplication) Update(ctx *fiber.Ctx) error {
 	})
 }
 
-func (a *LocationApplication) Delete(ctx *fiber.Ctx) error {
+func (a *LocationApplication) SoftDelete(ctx *fiber.Ctx) error {
 	request := &model.LocationDeleteRequest{
 		LocationId: ctx.Params("locationId"),
 	}

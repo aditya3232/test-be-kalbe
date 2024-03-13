@@ -16,6 +16,7 @@ type RouteConfig struct {
 	EmployeeApplication   *application.EmployeeApplication
 	AuthApplication       *application.AuthApplication
 	MiddlewareApplication *middleware.JwtApplication
+	LocationApplication   *application.LocationApplication
 }
 
 func (r *RouteConfig) Setup() {
@@ -44,7 +45,6 @@ func (r *RouteConfig) SetupAuthenticationRoute() {
 
 	authenticationGroup.Post("/login", r.AuthApplication.Login)
 	authenticationGroup.Post("/logout", r.AuthApplication.Logout)
-	authenticationGroup.Post("/employee", r.EmployeeApplication.Create)
 
 }
 
@@ -67,8 +67,14 @@ func (r *RouteConfig) SetupMiddlewareRoute() {
 	middlewareGroup.Delete("/position/:positionId", r.PositionApplication.SoftDelete)
 
 	middlewareGroup.Get("/employees", r.EmployeeApplication.List)
-	// middlewareGroup.Post("/employee", r.EmployeeApplication.Create)
+	middlewareGroup.Post("/employee", r.EmployeeApplication.Create)
 	middlewareGroup.Put("/employee/:employeeId", r.EmployeeApplication.Update)
 	middlewareGroup.Get("/employee/:employeeId", r.EmployeeApplication.Get)
 	middlewareGroup.Delete("/employee/:employeeId", r.EmployeeApplication.SoftDelete)
+
+	middlewareGroup.Get("/locations", r.LocationApplication.List)
+	middlewareGroup.Post("/location", r.LocationApplication.Create)
+	middlewareGroup.Put("/location/:locationId", r.LocationApplication.Update)
+	middlewareGroup.Get("/location/:locationId", r.LocationApplication.Get)
+	middlewareGroup.Delete("/location/:locationId", r.LocationApplication.SoftDelete)
 }
