@@ -10,7 +10,7 @@
     "level": 6
   },
   "jwt": {
-    "secret": "secret",
+    "secret": "secret32",
     "expiresIn": 2
   },
   "database": {

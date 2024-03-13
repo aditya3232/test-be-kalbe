@@ -9,29 +9,26 @@ import (
 )
 
 var JWT_SECRET = viper.GetString("jwt.secret")
+var JWT_EXPIRES_IN = viper.GetInt("jwt.expiresIn")
 
-func GenerateToken(employeeId int, expiresIn int) (string, error) {
+func GenerateToken(employeeId int) (string, time.Time, error) {
 	claims := jwt.MapClaims{
 		"employee": map[string]interface{}{
 			"employee_id": employeeId,
 		},
 	}
 
-	// expiresIn is optional, if not set, it will be 1 day
-	// if expiresIn is set, it will be in days
-	if expiresIn != 0 {
-		claims["exp"] = time.Now().Add(time.Hour * 24 * time.Duration(expiresIn)).Unix()
-	} else {
-		claims["exp"] = time.Now().Add(time.Hour * 24).Unix()
-	}
+	// Set the expiration time for the token, in this case when JWT_EXPIRES_IN is 24, then the token will expire in 24 hours
+	expirationTime := time.Now().Add(time.Hour * time.Duration(JWT_EXPIRES_IN))
+	claims["exp"] = expirationTime.Unix()
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedToken, err := token.SignedString(JWT_SECRET)
 	if err != nil {
-		return signedToken, err
+		return "", time.Time{}, err
 	}
 
-	return signedToken, nil
+	return signedToken, expirationTime, nil
 }
 
 func ValidateToken(encodedToken string) (*jwt.Token, error) {

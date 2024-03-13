@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"test-be-kalbe/internal/application"
+	"test-be-kalbe/internal/middleware"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,11 +14,14 @@ type RouteConfig struct {
 	DepartmentApplication *application.DepartmentApplication
 	PositionApplication   *application.PositionApplication
 	EmployeeApplication   *application.EmployeeApplication
+	AuthApplication       *application.AuthApplication
+	MiddlewareApplication *middleware.JwtApplication
 }
 
-func (c *RouteConfig) Setup() {
-	c.App.Use(recoverPanic)
-	c.SetupGuestRoute()
+func (r *RouteConfig) Setup() {
+	r.App.Use(recoverPanic)
+	r.SetupGuestRoute()
+	r.SetupMiddlewareRoute()
 }
 
 func recoverPanic(ctx *fiber.Ctx) error {
@@ -36,7 +40,7 @@ func recoverPanic(ctx *fiber.Ctx) error {
 }
 
 func (r *RouteConfig) SetupGuestRoute() {
-	r.App.Get("/api/departments", r.DepartmentApplication.List)
+	// r.App.Get("/api/departments", r.DepartmentApplication.List)
 	r.App.Post("/api/department", r.DepartmentApplication.Create)
 	r.App.Put("/api/department/:departmentId", r.DepartmentApplication.Update)
 	r.App.Get("/api/department/:departmentId", r.DepartmentApplication.Get)
@@ -54,4 +58,15 @@ func (r *RouteConfig) SetupGuestRoute() {
 	r.App.Get("/api/employee/:employeeId", r.EmployeeApplication.Get)
 	r.App.Delete("/api/employee/:employeeId", r.EmployeeApplication.SoftDelete)
 
+	r.App.Post("/api/login", r.AuthApplication.Login)
+	r.App.Post("/api/logout", r.AuthApplication.Logout)
+
+}
+
+// SetupMiddlewareRoute
+func (r *RouteConfig) SetupMiddlewareRoute() {
+	middlewareGroup := r.App.Group("/api")
+	middlewareGroup.Use(r.MiddlewareApplication.JWTMiddleware)
+
+	middlewareGroup.Get("/departments", r.DepartmentApplication.List)
 }

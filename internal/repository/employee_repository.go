@@ -21,7 +21,7 @@ type EmployeeRepository interface {
 	FindById(db *gorm.DB, entity *entity.Employee, id any) error
 	Search(db *gorm.DB, request *model.EmployeeSearchRequest) ([]entity.Employee, int64, error)
 	Filter(request *model.EmployeeSearchRequest) func(tx *gorm.DB) *gorm.DB
-	LastInsertId(db *gorm.DB) (int64, error)
+	FindByEmployeeName(db *gorm.DB, entity *entity.Employee, name string) error
 }
 
 func NewEmployeeRepository(db *gorm.DB, log *logrus.Logger) *employeeRepository {
@@ -79,8 +79,6 @@ func (r *employeeRepository) Filter(request *model.EmployeeSearchRequest) func(t
 	}
 }
 
-func (r *employeeRepository) LastInsertId(db *gorm.DB) (int64, error) {
-	var id int64
-	err := db.Raw("SELECT LAST_INSERT_ID()").Scan(&id).Error
-	return id, err
+func (r *employeeRepository) FindByEmployeeName(db *gorm.DB, entity *entity.Employee, name string) error {
+	return db.Where("employee_name = ? AND deleted_at IS NULL", name).Take(entity).Error
 }

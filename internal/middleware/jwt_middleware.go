@@ -5,17 +5,29 @@ import (
 	"test-be-kalbe/internal/helper"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/sirupsen/logrus"
 )
 
+type JwtApplication struct {
+	Log *logrus.Logger
+}
+
+func NewJwtApplication(log *logrus.Logger) *JwtApplication {
+	return &JwtApplication{
+		Log: log,
+	}
+}
+
 // JWTMiddleware is a middleware to protect routes
-func JWTMiddleware(ctx *fiber.Ctx) error {
+func (a *JwtApplication) JWTMiddleware(ctx *fiber.Ctx) error {
 	// Get the JWT token from the request header
 	authHeader := ctx.Get("Authorization")
-	tokenString := strings.Split(authHeader, " ")[1]
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
 	// Parse the JWT token
 	_, err := helper.ValidateToken(tokenString)
 	if err != nil {
+		a.Log.WithError(err).Error("error validating token")
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Unauthorized",
 		})
@@ -24,6 +36,7 @@ func JWTMiddleware(ctx *fiber.Ctx) error {
 	// Extract the user ID from the token
 	employeeId, err := helper.GetEmployeeIDFromToken(tokenString)
 	if err != nil {
+		a.Log.WithError(err).Error("error getting employee ID from token")
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Unauthorized",
 		})

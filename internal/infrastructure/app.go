@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"test-be-kalbe/internal/application"
+	"test-be-kalbe/internal/middleware"
 	"test-be-kalbe/internal/repository"
 	"test-be-kalbe/internal/route"
 	"test-be-kalbe/internal/service"
@@ -31,11 +32,14 @@ func Bootstrap(config *BootstrapConfig) {
 	departmentService := service.NewDepartmentService(config.DB, config.Log, config.Validate, departmentRepository)
 	positionService := service.NewPositionService(config.DB, config.Log, config.Validate, positionRepository, departmentRepository)
 	employeeService := service.NewEmployeeService(config.DB, config.Log, config.Validate, employeeRepository, positionRepository, departmentRepository)
+	authService := service.NewAuthService(config.DB, config.Log, config.Validate, employeeRepository)
 
 	// setup application
 	departmentApplication := application.NewDepartmentApplication(departmentService, config.Log)
 	positionApplication := application.NewPositionApplication(positionService, config.Log)
 	employeeApplication := application.NewEmployeeApplication(employeeService, config.Log)
+	authApplication := application.NewAuthApplication(authService, config.Log)
+	jwtMiddleware := middleware.NewJwtApplication(config.Log)
 
 	// setup route
 	routeConfig := route.RouteConfig{
@@ -43,6 +47,8 @@ func Bootstrap(config *BootstrapConfig) {
 		DepartmentApplication: departmentApplication,
 		PositionApplication:   positionApplication,
 		EmployeeApplication:   employeeApplication,
+		AuthApplication:       authApplication,
+		MiddlewareApplication: jwtMiddleware,
 	}
 	routeConfig.Setup()
 }
