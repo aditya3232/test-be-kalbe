@@ -15,8 +15,8 @@ type AttendanceResponse struct {
 type AttendanceCreateRequest struct {
 	EmployeeId string `json:"employee_id" validate:"required"`
 	LocationId string `json:"location_id" validate:"required"`
-	AbsentIn   string `json:"absent_in" validate:"required"`
-	AbsentOut  string `json:"absent_out" validate:"required"`
+	AbsentIn   string `json:"absent_in"`
+	AbsentOut  string `json:"absent_out"`
 	CreatedBy  string `json:"created_by"`
 }
 
@@ -24,8 +24,8 @@ type AttendanceUpdateRequest struct {
 	AttendanceId string `json:"attendance_id" validate:"required"`
 	EmployeeId   string `json:"employee_id" validate:"required"`
 	LocationId   string `json:"location_id" validate:"required"`
-	AbsentIn     string `json:"absent_in" validate:"required"`
-	AbsentOut    string `json:"absent_out" validate:"required"`
+	AbsentIn     string `json:"absent_in"`
+	AbsentOut    string `json:"absent_out"`
 	UpdatedBy    string `json:"updated_by"`
 }
 

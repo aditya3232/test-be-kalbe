@@ -17,6 +17,7 @@ type RouteConfig struct {
 	AuthApplication       *application.AuthApplication
 	MiddlewareApplication *middleware.JwtApplication
 	LocationApplication   *application.LocationApplication
+	AttendanceApplication *application.AttendanceApplication
 }
 
 func (r *RouteConfig) Setup() {
@@ -77,4 +78,11 @@ func (r *RouteConfig) SetupMiddlewareRoute() {
 	middlewareGroup.Put("/location/:locationId", r.LocationApplication.Update)
 	middlewareGroup.Get("/location/:locationId", r.LocationApplication.Get)
 	middlewareGroup.Delete("/location/:locationId", r.LocationApplication.SoftDelete)
+
+	middlewareGroup.Get("/attendances", r.AttendanceApplication.List)
+	middlewareGroup.Post("/attendance", r.AttendanceApplication.Create)
+	middlewareGroup.Put("/attendance/:attendanceId", r.AttendanceApplication.Update)
+	middlewareGroup.Get("/attendance/:attendanceId", r.AttendanceApplication.Get)
+	middlewareGroup.Delete("/attendance/:attendanceId", r.AttendanceApplication.SoftDelete)
+
 }

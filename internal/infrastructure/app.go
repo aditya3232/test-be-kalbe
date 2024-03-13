@@ -28,6 +28,7 @@ func Bootstrap(config *BootstrapConfig) {
 	positionRepository := repository.NewPositionRepository(config.DB, config.Log)
 	employeeRepository := repository.NewEmployeeRepository(config.DB, config.Log)
 	locationRepository := repository.NewLocationRepository(config.DB, config.Log)
+	attendanceRepository := repository.NewAttendanceRepository(config.DB, config.Log)
 
 	// setup service
 	departmentService := service.NewDepartmentService(config.DB, config.Log, config.Validate, departmentRepository)
@@ -35,6 +36,7 @@ func Bootstrap(config *BootstrapConfig) {
 	employeeService := service.NewEmployeeService(config.DB, config.Log, config.Validate, employeeRepository, positionRepository, departmentRepository)
 	authService := service.NewAuthService(config.DB, config.Log, config.Validate, employeeRepository)
 	locationService := service.NewLocationService(config.DB, config.Log, config.Validate, locationRepository)
+	attendanceService := service.NewAttendanceService(config.DB, config.Log, config.Validate, attendanceRepository, employeeRepository, locationRepository)
 
 	// setup application
 	departmentApplication := application.NewDepartmentApplication(departmentService, config.Log)
@@ -43,6 +45,7 @@ func Bootstrap(config *BootstrapConfig) {
 	authApplication := application.NewAuthApplication(authService, config.Log)
 	jwtMiddleware := middleware.NewJwtApplication(employeeService, config.Log)
 	locationApplication := application.NewLocationApplication(locationService, config.Log)
+	attendanceApplication := application.NewAttendanceApplication(attendanceService, config.Log)
 
 	// setup route
 	routeConfig := route.RouteConfig{
@@ -53,6 +56,7 @@ func Bootstrap(config *BootstrapConfig) {
 		AuthApplication:       authApplication,
 		MiddlewareApplication: jwtMiddleware,
 		LocationApplication:   locationApplication,
+		AttendanceApplication: attendanceApplication,
 	}
 	routeConfig.Setup()
 }
