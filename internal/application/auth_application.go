@@ -1,7 +1,6 @@
 package application
 
 import (
-	"strings"
 	"test-be-kalbe/internal/domain/model"
 	"test-be-kalbe/internal/service"
 
@@ -49,10 +48,6 @@ func (a *AuthApplication) Logout(ctx *fiber.Ctx) error {
 		a.Log.Error("error parsing request header")
 		return fiber.ErrUnauthorized
 	}
-
-	token := strings.TrimPrefix(request.Token, "Bearer ")
-
-	request.Token = token
 
 	response, err := a.AuthService.Logout(ctx.UserContext(), request)
 	if err != nil {

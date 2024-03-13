@@ -18,5 +18,6 @@ func EmployeeToResponse(employee *entity.Employee) *model.EmployeeResponse {
 		CreatedBy:    employee.CreatedBy,
 		UpdatedAt:    employee.UpdatedAt.Format("2006-01-02 15:04:05"),
 		UpdatedBy:    employee.UpdatedBy,
+		Token:        employee.Token,
 	}
 }

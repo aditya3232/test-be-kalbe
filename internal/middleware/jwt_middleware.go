@@ -1,20 +1,24 @@
 package middleware
 
 import (
-	"strings"
+	"strconv"
+	"test-be-kalbe/internal/domain/model"
 	"test-be-kalbe/internal/helper"
+	"test-be-kalbe/internal/service"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/sirupsen/logrus"
 )
 
 type JwtApplication struct {
-	Log *logrus.Logger
+	EmployeeService service.EmployeeService
+	Log             *logrus.Logger
 }
 
-func NewJwtApplication(log *logrus.Logger) *JwtApplication {
+func NewJwtApplication(employeeService service.EmployeeService, log *logrus.Logger) *JwtApplication {
 	return &JwtApplication{
-		Log: log,
+		EmployeeService: employeeService,
+		Log:             log,
 	}
 }
 
@@ -22,10 +26,9 @@ func NewJwtApplication(log *logrus.Logger) *JwtApplication {
 func (a *JwtApplication) JWTMiddleware(ctx *fiber.Ctx) error {
 	// Get the JWT token from the request header
 	authHeader := ctx.Get("Authorization")
-	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
 	// Parse the JWT token
-	_, err := helper.ValidateToken(tokenString)
+	_, err := helper.ValidateToken(authHeader)
 	if err != nil {
 		a.Log.WithError(err).Error("error validating token")
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -34,11 +37,30 @@ func (a *JwtApplication) JWTMiddleware(ctx *fiber.Ctx) error {
 	}
 
 	// Extract the user ID from the token
-	employeeId, err := helper.GetEmployeeIDFromToken(tokenString)
+	employeeId, err := helper.GetEmployeeIDFromToken(authHeader)
 	if err != nil {
 		a.Log.WithError(err).Error("error getting employee ID from token")
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Unauthorized",
+		})
+	}
+
+	// get employee by id
+	formatEmployeeId := strconv.Itoa(employeeId)
+	employee, err := a.EmployeeService.FindById(ctx.UserContext(), &model.EmployeeGetByIdRequest{EmployeeId: formatEmployeeId})
+	if err != nil {
+		a.Log.WithError(err).Error("error finding employee by id")
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized",
+		})
+	}
+
+	if employee.Token != authHeader {
+		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Unauthorized",
+			// "database":    employee.Token,
+			// "request":     authHeader,
+			// "allEmployee": employee,
 		})
 	}
 

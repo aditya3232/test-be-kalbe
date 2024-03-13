@@ -12,6 +12,7 @@ type EmployeeResponse struct {
 	CreatedBy    string `json:"created_by"`
 	UpdatedAt    string `json:"updated_at"`
 	UpdatedBy    string `json:"updated_by"`
+	Token        string `json:"token"`
 }
 
 type EmployeeCreateRequest struct {

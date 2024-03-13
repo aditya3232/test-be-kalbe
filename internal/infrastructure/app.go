@@ -39,7 +39,7 @@ func Bootstrap(config *BootstrapConfig) {
 	positionApplication := application.NewPositionApplication(positionService, config.Log)
 	employeeApplication := application.NewEmployeeApplication(employeeService, config.Log)
 	authApplication := application.NewAuthApplication(authService, config.Log)
-	jwtMiddleware := middleware.NewJwtApplication(config.Log)
+	jwtMiddleware := middleware.NewJwtApplication(employeeService, config.Log)
 
 	// setup route
 	routeConfig := route.RouteConfig{

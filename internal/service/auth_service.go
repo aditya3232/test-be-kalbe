@@ -64,6 +64,14 @@ func (s *authService) Login(ctx context.Context, request *model.LoginRequest) (*
 		return nil, fiber.ErrInternalServerError
 	}
 
+	// update token
+	employee.Token = token
+
+	if err := s.EmployeeRepository.Update(tx, employee); err != nil {
+		s.Log.WithError(err).Error("error updating token")
+		return nil, fiber.ErrInternalServerError
+	}
+
 	// commit transaction
 	if err := tx.Commit().Error; err != nil {
 		s.Log.WithError(err).Error("error commit transaction")
@@ -75,6 +83,9 @@ func (s *authService) Login(ctx context.Context, request *model.LoginRequest) (*
 }
 
 func (s *authService) Logout(ctx context.Context, request *model.LogoutRequest) (*model.LogoutResponse, error) {
+	tx := s.DB.WithContext(ctx).Begin()
+	defer tx.Rollback()
+
 	if err := s.Validate.Struct(request); err != nil {
 		s.Log.WithError(err).Error("error validating request body")
 		return nil, fiber.ErrBadRequest
@@ -98,6 +109,26 @@ func (s *authService) Logout(ctx context.Context, request *model.LogoutRequest) 
 	expired, err := helper.InvalidateToken(request.Token)
 	if err != nil {
 		s.Log.WithError(err).Error("error invalidating token")
+		return nil, fiber.ErrInternalServerError
+	}
+
+	// update token to null
+	employee := new(entity.Employee)
+	if err := s.EmployeeRepository.FindById(tx, employee, int64(employeeId)); err != nil {
+		s.Log.WithError(err).Error("error finding employee id")
+		return nil, fiber.ErrNotFound
+	}
+
+	employee.Token = ""
+
+	if err := s.EmployeeRepository.Update(tx, employee); err != nil {
+		s.Log.WithError(err).Error("error updating token")
+		return nil, fiber.ErrInternalServerError
+	}
+
+	// commit transaction
+	if err := tx.Commit().Error; err != nil {
+		s.Log.WithError(err).Error("error commit transaction")
 		return nil, fiber.ErrInternalServerError
 	}
 
